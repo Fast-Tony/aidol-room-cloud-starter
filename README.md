@@ -1,73 +1,105 @@
 ﻿# Aidol Room Cloud — AI Livestream Starter
 
-**Tự xây dựng phần mềm livestream AI của bạn bằng API Aidol Room Cloud.**
+**Build your own AI livestreaming software with the Aidol Room Cloud API.**
 
-Bộ mã nguồn mẫu giúp nhà phát triển tạo ứng dụng mang giao diện và trải nghiệm riêng, kết nối với phòng đã thuê trên Aidol Room Cloud và tích hợp tương tác khán giả vào phiên live AI. Bạn có thể chỉnh sửa, phân phối và phát triển sản phẩm thương mại theo giấy phép [MIT](LICENSE).
+An open-source Python starter for developers building custom AI livestreaming applications. Create your own interface and workflows, connect to a rented Aidol Room Cloud session, send audience interactions, and retrieve a private Browser Source URL for OBS.
 
-## Bạn có thể xây dựng gì?
+Use, modify, distribute, and build commercial applications with this sample under the [MIT License](LICENSE).
 
-- Ứng dụng livestream AI với giao diện và thương hiệu của riêng bạn.
-- Công cụ tiếp nhận bình luận, tương tác từ các nguồn được phép truy cập và gửi vào phòng live.
-- Bảng điều khiển kết nối phòng, theo dõi thao tác và lấy link Browser Source cho OBS.
-- Tích hợp phiên live AI vào quy trình bán hàng và phần mềm hiện có.
+## What can you build?
 
-## Chức năng đã có trong bản mẫu
+- AI livestreaming applications with your own branding and user experience.
+- Audience interaction tools connected to sources you are authorized to access.
+- Desktop dashboards for room pairing, interaction delivery, and OBS integration.
+- Integrations between AI live sessions and existing sales or content workflows.
 
-| Chức năng | Hiện tại |
+## Current capabilities
+
+| Feature | Availability |
 |---|---|
-| Kết nối phòng đã thuê bằng mã ALC | Có |
-| Gửi bình luận, vào xem, theo dõi, chia sẻ, thích, quà tặng | Có |
-| Tự nhận link Browser Source theo phòng | Có |
-| Sao chép link OBS và mở xem bằng trình duyệt | Có |
-| Client Python và giao diện desktop mẫu | Có |
-| Tạo/thuê phòng, cấu hình nhân vật, kịch bản, bật/tắt live qua client này | Chưa hỗ trợ; thao tác trên web Room |
-| Tự quét TikTok, Facebook, Shopee | Chưa tích hợp trong bản mẫu |
+| Pair with a rented room using a one-time ALC code | Supported |
+| Send comments, joins, follows, shares, likes, and gifts | Supported |
+| Automatically retrieve the room's Browser Source URL | Supported |
+| Copy the URL for OBS or open it in a browser | Supported |
+| Python API client and desktop demo | Included |
+| Create/rent rooms, configure avatars/scripts, or start/stop live through this client | Not implemented; use the Room web dashboard |
+| Built-in TikTok, Facebook, or Shopee event collection | Not included |
 
-Đây là bộ khởi đầu cho nhà phát triển. Phiên bản hiện tại kết nối và tương tác với phòng được chuẩn bị trên web Room; chưa cung cấp toàn bộ vòng đời phòng qua API mẫu.
+This is a starter application, not a complete room-management SDK. Prepare and start your live session in the web dashboard before using this sample to send interactions.
 
-## Bắt đầu
+## Quick start
 
-Cài Python 3.10+ có Tkinter. Client dùng thư viện chuẩn, không cần cài thêm thư viện.
+### Requirements
+
+- Python 3.10 or later.
+- Tkinter for the desktop application. Tkinter availability depends on your Python installation; on some systems it is installed separately.
+- An Aidol Room Cloud account with an active rented room.
+
+The client uses Python's standard library and requires no pip packages.
 
 ```sh
+git clone https://github.com/Fast-Tony/aidol-room-cloud-starter.git
+cd aidol-room-cloud-starter
 python demo_gui.py
 ```
 
-1. Đăng nhập Aidol Room Cloud và thuê phòng.
-2. Chọn nhân vật, kịch bản và bật live trên web Room.
-3. Lấy mã ALC trong mục kết nối Router của phòng.
-4. Mở ứng dụng mẫu, nhập mã rồi bấm **Kết nối phòng**.
-5. App tự nhận link; bấm **Sao chép link OBS**, dán vào nguồn Browser trong OBS.
-6. Gửi bình luận hoặc sự kiện để thử tương tác. Bật phản hồi bình luận trong cấu hình phòng.
+Use `python3` instead of `python` if that is how Python is installed on your system.
 
-Nếu chưa có link phát, ứng dụng tự kiểm tra lại mỗi 15 giây.
+### Connect your room
 
-## Tích hợp vào phần mềm của bạn
+1. Sign in to [Aidol Room Cloud](https://room.genaidol.com) and rent a room.
+2. Select your avatar and script, then start the live session in the Room dashboard.
+3. Get a one-time ALC code from the room's Router connection section.
+4. Enter the code in the sample application and click **Connect room**.
+5. The app retrieves the Browser Source URL automatically. Click **Copy OBS URL**.
+6. In OBS, select **Sources → + → Browser** and paste the URL.
+7. Enable comment replies in the room settings, then send a test interaction from the app.
+
+If a viewing URL is not available yet, the app checks again every 15 seconds.
+
+## Integrate with your application
 
 ```python
 from client import AidolClient
 
 client = AidolClient()
 room = client.connect('ALC-CODE-FROM-ROOM')
-# room['browser_source_url'] là link xem riêng khi luồng đã có.
-client.send(
+
+# room['browser_source_url'] contains a private viewing URL when available.
+# Do not print it to public logs.
+
+receipt = client.send(
     'comment',
-    'Lan',
-    'Sản phẩm có màu gì?',
+    'Alex',
+    'Which colors are available?',
+    platform='custom',
     event_id='source-message-123',
 )
 ```
 
-- `client.py`: lớp gọi API để tích hợp vào ứng dụng của bạn.
-- `demo_gui.py`: giao diện mẫu để tham khảo và phát triển tiếp.
-- Mỗi key chỉ truy cập một phòng và không có quyền bật/tắt live.
-- Giữ nguyên event_id và nội dung khi gửi lại để chống trùng.
-- HTTP 202 xác nhận nhận sự kiện, không xác nhận AI đã phát lời phản hồi. Phản hồi phụ thuộc cấu hình, dịch vụ giọng nói/bộ não và phiên thuê còn hiệu lực.
+### Included files
 
-## Nền tảng và tài liệu
+- `client.py`: reusable Python API client and command-line entry point.
+- `demo_gui.py`: English-language desktop demo with room pairing, interaction testing, and OBS URL retrieval.
+- `LICENSE`: MIT License for this sample source code.
 
-- Aidol Room Cloud: https://room.genaidol.com
-- API hiện tại: https://genaidol.com/cloud-api/developer/v1
-- Tài liệu API: https://genaidol.com/cloud-api/developer/v1/docs
+### Delivery behavior
 
-Không công khai API key, mã kết nối hoặc link xem riêng. App chỉ giữ key trong bộ nhớ. Giấy phép MIT áp dụng cho mã nguồn mẫu; việc dùng dịch vụ Aidol Room Cloud tuân theo tài khoản, quyền sử dụng và mức phí của nền tảng.
+- Supported event types: `comment`, `join`, `follow`, `share`, `like`, and `gift`.
+- Each API key is scoped to one room. It cannot start or stop a live session.
+- Reuse the same event ID and content when retrying an event to prevent duplicates.
+- HTTP 202 acknowledges receipt; it does not confirm that the AI response has been spoken.
+- Replies depend on room configuration, an active rental, and available voice/AI services.
+- The sample does not collect platform events itself. Connect your authorized event source to the client.
+
+## API and resources
+
+- [Aidol Room Cloud](https://room.genaidol.com)
+- API base URL: `https://genaidol.com/cloud-api/developer/v1`
+- [API reference](https://genaidol.com/cloud-api/developer/v1/docs)
+
+## Credentials and licensing
+
+Keep API keys, pairing codes, and private viewing URLs out of source control and public logs. The demo keeps its API key in memory rather than saving it to disk.
+
+The MIT License covers this sample source code. Access to Aidol Room Cloud remains subject to platform permissions, account requirements, and service charges.
