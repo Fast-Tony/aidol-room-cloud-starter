@@ -8,6 +8,10 @@ Use, modify, distribute, and build commercial applications with this sample unde
 
 ## What can you build?
 
+**Want your AI avatar to answer audience comments?** Collect an event in your application and send it to the rented room. Aidol Room Cloud handles the AI reply and voice playback; no separate LLM or TTS call is needed for each comment. The room must be live with the relevant replies enabled. Filters, cooldowns, balance, and service readiness still apply.
+
+Read the **[audience interaction guide](AUDIENCE_INTERACTIONS.md)** for collector callbacks, event mapping, HTTP payloads, and troubleshooting. Try the **[runnable event bridge](examples/event_bridge.py)** to forward JSON events to your room.
+
 - AI livestreaming applications with your own branding and user experience.
 - Audience interaction tools connected to sources you are authorized to access.
 - Desktop dashboards for room pairing, interaction delivery, and OBS integration.
