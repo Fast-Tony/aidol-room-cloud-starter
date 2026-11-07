@@ -103,3 +103,44 @@ receipt = client.send(
 Keep API keys, pairing codes, and private viewing URLs out of source control and public logs. The demo keeps its API key in memory rather than saving it to disk.
 
 The MIT License covers this sample source code. Access to Aidol Room Cloud remains subject to platform permissions, account requirements, and service charges.
+## Configure voices and scripts through the API
+
+The starter now includes room-scoped configuration methods:
+
+| Method | Endpoint | Purpose |
+|---|---|---|
+| GET | `/rooms/{session_id}/config` | Read saved room settings and revision |
+| PUT | `/rooms/{session_id}/config` | Save voice, scripts, brain prompt, model, or runtime settings |
+| GET | `/rooms/{session_id}/catalog/voices` | Read the room voice catalog |
+
+These endpoints use the same developer Bearer key as event delivery. Authorization is checked against the active rented room before forwarding a request. No GPU address or provider credentials are required in your app.
+
+```python
+# After client.connect(...):
+voices = client.voices()
+current = client.get_config()
+
+# Use a voice_id returned by your room's voice catalog.
+saved = client.update_config(
+    current['revision'],
+    voice={'voice_id': 'YOUR_VOICE_ID', 'name': 'My selected voice'},
+    brain_prompt='You are a helpful live shopping host. Answer clearly.',
+    scripts=[{
+        'id': 'intro',
+        'name': 'Product introduction',
+        'product_name': 'My product',
+        'prompt': 'Introduce this product and its main benefits.',
+        'product_context': 'Accurate product details go here.',
+        'dialogue': 'Welcome! Let me introduce our product.',
+        'enabled': True,
+        'order': 0,
+    }],
+    runtime={'voice_speed': 1.1},
+)
+```
+
+`expected_revision` is mandatory. On HTTP 409, reload with `get_config()` and review your changes before saving again; do not blindly retry with a new revision. Sending `scripts` replaces the saved playlist, while omitted top-level fields remain unchanged. Send `scripts=[]` only to clear the playlist deliberately.
+
+**Saving does not restart or modify the speech queue of a running live session.** The response reports `status: saved`. Apply the saved settings through the Room dashboard's update/start workflow. This starter still does not expose start/stop controls.
+
+Supported configuration fields follow the Room worker schema: `voice`, `brain_prompt`, `scripts`, `runtime`, and `model`. Unsupported or oversized fields are rejected by the service/worker. The voice catalog depends on the room's assigned worker; an unavailable catalog is reported as an error rather than a fabricated list.
