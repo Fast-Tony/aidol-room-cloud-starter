@@ -22,7 +22,8 @@ Use, modify, distribute, and build commercial applications with this sample unde
 | Automatically retrieve the room's Browser Source URL | Supported |
 | Copy the URL for OBS or open it in a browser | Supported |
 | Python API client and desktop demo | Included |
-| Create/rent rooms, configure avatars/scripts, or start/stop live through this client | Not implemented; use the Room web dashboard |
+| Read/save voices, scripts, brain prompts, models, and runtime settings | Supported through client methods |
+| Create/rent rooms or start/stop live through this client | Not implemented; use the Room web dashboard |
 | Built-in TikTok, Facebook, or Shopee event collection | Not included |
 
 This is a starter application, not a complete room-management SDK. Prepare and start your live session in the web dashboard before using this sample to send interactions.
