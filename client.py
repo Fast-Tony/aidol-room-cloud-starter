@@ -22,6 +22,12 @@ class AidolClient:
    time.sleep(2**attempt)
  def connect(self,code):
   result=self.request("POST","/connect",{"code":code});self.key=result["api_key"];self.session=result["session_id"];return result
+ def get_config(self):
+  return self.request("GET","/rooms/"+self.session+"/config")
+ def update_config(self,expected_revision,**changes):
+  return self.request("PUT","/rooms/"+self.session+"/config",{"expected_revision":expected_revision,**changes})
+ def voices(self):
+  return self.request("GET","/rooms/"+self.session+"/catalog/voices")
  def send(self,kind,name,text="",platform="custom",event_id=None,reply=False):
   event={"id":event_id or uuid.uuid4().hex,"type":kind,"platform":platform,"user":{"name":name},"text":text}
   return self.request("POST","/rooms/"+self.session+"/events",{"events":[event],"auto_reply_interactions":reply},retry=True)
