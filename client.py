@@ -28,8 +28,8 @@ class AidolClient:
 
 if __name__=="__main__":
  import argparse
- p=argparse.ArgumentParser();p.add_argument("--code");p.add_argument("--text",default="Xin chao");p.add_argument("--name",default="Demo");p.add_argument("--type",choices=["comment","join","follow","share","like","gift"],default="comment");p.add_argument("--event-id");p.add_argument("--reply-interactions",action="store_true");p.add_argument("--connect-only",action="store_true");a=p.parse_args()
+ p=argparse.ArgumentParser();p.add_argument("--code");p.add_argument("--text",default="Hello");p.add_argument("--name",default="Demo");p.add_argument("--type",choices=["comment","join","follow","share","like","gift"],default="comment");p.add_argument("--event-id");p.add_argument("--reply-interactions",action="store_true");p.add_argument("--connect-only",action="store_true");a=p.parse_args()
  c=AidolClient(os.getenv("AIDOL_API_KEY",""),os.getenv("AIDOL_SESSION_ID",""),os.getenv("AIDOL_API_BASE",DEFAULT_BASE))
  if a.code:
-  c.connect(a.code);print("Connected:",c.session,"(key kept in memory; use the GUI to copy it)")
+  c.connect(a.code);print("Connected:",c.session,"(key kept in memory for this process only)")
  if not a.connect_only:print(json.dumps(c.send(a.type,a.name,a.text,event_id=a.event_id,reply=a.reply_interactions),ensure_ascii=False,indent=2))
