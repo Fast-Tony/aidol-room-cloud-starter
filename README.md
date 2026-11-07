@@ -8,6 +8,12 @@ Use, modify, distribute, and build commercial applications with this sample unde
 
 ## What can you build?
 
+### TikTok LIVE and Shopee Live
+
+Build a TikTok or Shopee audience integration by connecting your authorized collector to the room events API. Read **[TikTok and Shopee event integration](PLATFORM_EVENTS.md)** for collection options, platform-specific callbacks, Router's Shopee workflow, and reconnect/deduplication guidance.
+
+The developer API receives events; it does not currently launch platform collectors from a live URL.
+
 **Want your AI avatar to answer audience comments?** Collect an event in your application and send it to the rented room. Aidol Room Cloud handles the AI reply and voice playback; no separate LLM or TTS call is needed for each comment. The room must be live with the relevant replies enabled. Filters, cooldowns, balance, and service readiness still apply.
 
 Read the **[audience interaction guide](AUDIENCE_INTERACTIONS.md)** for collector callbacks, event mapping, HTTP payloads, and troubleshooting. Try the **[runnable event bridge](examples/event_bridge.py)** to forward JSON events to your room.
