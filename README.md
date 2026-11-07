@@ -1,4 +1,4 @@
-﻿# Aidol Room Cloud — AI Livestream Starter
+# Aidol Room Cloud — AI Livestream Starter
 
 **Build your own AI livestreaming software with the Aidol Room Cloud API.**
 
@@ -118,7 +118,7 @@ The starter now includes room-scoped configuration methods:
 | PUT | `/rooms/{session_id}/config` | Save voice, scripts, brain prompt, model, or runtime settings |
 | GET | `/rooms/{session_id}/catalog/voices` | Read the room voice catalog |
 
-These endpoints use the same developer Bearer key as event delivery. Authorization is checked against the active rented room before forwarding a request. No GPU address or provider credentials are required in your app.
+These endpoints use the same developer Bearer key as event delivery. Authorization is checked against the active rented room before forwarding a request. Your application only connects to Aidol Room Cloud.
 
 ```python
 # After client.connect(...):
@@ -149,3 +149,7 @@ saved = client.update_config(
 **Saving does not restart or modify the speech queue of a running live session.** The response reports `status: saved`. Apply the saved settings through the Room dashboard's update/start workflow. This starter still does not expose start/stop controls.
 
 Supported configuration fields follow the Room worker schema: `voice`, `brain_prompt`, `scripts`, `runtime`, and `model`. Unsupported or oversized fields are rejected by the service/worker. The voice catalog depends on the room's assigned worker; an unavailable catalog is reported as an error rather than a fabricated list.
+
+## Aidol resource identifiers
+
+Voice and avatar/model selectors returned by the developer API are opaque Aidol IDs scoped to your room (for example, aidol_voice_...). Use only IDs returned by that room's catalog or configuration. Internal service identifiers, infrastructure addresses, raw service errors, and resource URLs are not part of this API contract. Resource names in this developer catalog are neutral Aidol labels.
