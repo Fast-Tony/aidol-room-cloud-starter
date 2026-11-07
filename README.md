@@ -10,7 +10,7 @@ Use, modify, distribute, and build commercial applications with this sample unde
 
 ### TikTok LIVE and Shopee Live
 
-Build a TikTok or Shopee audience integration by connecting your authorized collector to the room events API. Read **[TikTok and Shopee event integration](PLATFORM_EVENTS.md)** for collection options, platform-specific callbacks, Router's Shopee workflow, and reconnect/deduplication guidance.
+Use an independent open-source collector and forward events to your rented room. See **[Open-source TikTok and Shopee integrations](PLATFORM_EVENTS.md)** for repository links and an Aidol callback example. These are community projects, not official platform APIs.
 
 The developer API receives events; it does not currently launch platform collectors from a live URL.
 
