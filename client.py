@@ -1,4 +1,4 @@
-"""Public sample client. Python standard library only; no provider credentials."""
+"""Aidol Room Cloud sample client. Python standard library only."""
 import json, os, time, uuid, urllib.request, urllib.error
 
 DEFAULT_BASE="https://genaidol.com/cloud-api/developer/v1"
